@@ -3,6 +3,7 @@ from kivymd.app import MDApp
 #from kivymd.uix.button 
 from kivy.lang import Builder 
 from pytube import YouTube
+from
 
 
 """
@@ -61,10 +62,19 @@ class Test(MDApp):
 
         return self.screen
 
-    def audio_func(self):
-        pass #mp3 dowmnload
+    def audio_func(self,*args):
+        #mp3 func
+        links = self.screen.ids.link.text
+        yt = YouTube(links)
+        try:
+            filename = "audio.mp3"
+            audio = yt.streams.get_audio_only()
+            audio.download()
+        except:
+            print("something went wrong")
+        print("done")
 
-    def video_func(self):
+    def video_func(self,*args):
         #mp4 function
         links = self.screen.ids.link.text
         utube = YouTube(links)
@@ -74,6 +84,8 @@ class Test(MDApp):
             print(f"the problem is {e}")
         print("finished")
 
+    def res(self):
+        print()
 
 
 
