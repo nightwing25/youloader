@@ -2,18 +2,19 @@
 from kivymd.app import MDApp
 #from kivymd.uix.button 
 from kivy.lang import Builder 
+from pytube import YouTube
 
 
 """
-^create a textfield in the middle next to the texfield put icon button for the choose path function
-^download video or audio to dl folder by default 
-
+*created by:D.wolf
+*simple youtube downlowder
 """
 
 kv = """
 MDScreen:
 
     MDLabel:
+        id:label_text
         text:"Youtube Downloader"
         halign:"center"
         font_style:"H3"
@@ -41,6 +42,7 @@ MDScreen:
         id:video
         text:"mp4 format"
         pos_hint:{"center_x":.69,"center_y":.4}
+        on_press:app.video_func()
 
 
 
@@ -62,11 +64,19 @@ class Test(MDApp):
     def audio_func(self):
         pass #mp3 dowmnload
 
-    def video_func():
-        pass #mp4 function
+    def video_func(self):
+        #mp4 function
+        links = self.screen.ids.link.text
+        utube = YouTube(links)
+        try:
+            utube = utube.streams.get_highest_resolution().download()
+        except Exception as e:
+            print(f"the problem is {e}")
+        print("finished")
 
 
-        
+
+
 Test().run()
 
 
