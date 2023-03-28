@@ -1,4 +1,3 @@
-
 from kivymd.app import MDApp
 #from kivymd.uix.button 
 from kivy.lang import Builder 
@@ -38,6 +37,8 @@ MDScreen:
         id:audio
         text:"mp3 format"
         pos_hint:{"center_x":.3,"center_y":.4}
+        on_press:app.audio_func()
+
 
     MDRaisedButton:
         id:video
@@ -64,21 +65,19 @@ class Test(MDApp):
 
     def audio_func(self,*args):
         #mp3 func
-        links = self.screen.ids.link.text
-        yt = YouTube(links)
         try:
-            filename = "audio.mp3"
-            audio = yt.streams.get_audio_only()
-            audio.download()
-        except:
-            print("something went wrong")
+            links = self.screen.ids.link.text
+            yt = YouTube(links)
+            audio = yt.streams.get_audio_only().download()
+        except Exception as e:
+            print(f"the problem could be {e}")
         print("done")
 
     def video_func(self,*args):
         #mp4 function
-        links = self.screen.ids.link.text
-        utube = YouTube(links)
         try:
+            links = self.screen.ids.link.text
+            utube = YouTube(links)
             utube = utube.streams.get_highest_resolution().download()
         except Exception as e:
             print(f"the problem is {e}")
@@ -88,7 +87,7 @@ class Test(MDApp):
         print()
 
 
-
-Test().run()
+if __name__=="__main__":
+    Test().run()
 
 
