@@ -1,0 +1,142 @@
+<ContentNav>
+    MDList:
+        OneLineIconListItem:
+            text:"YouTube Downloader"
+            on_press:
+                root.nav.set_state("close")
+                root.screen_manager.current = "youtube"
+            IconLeftWidget:
+                icon:"youtube"
+
+        OneLineIconListItem:
+            text:"SoundCloud Downloader"
+            on_press:
+                root.nav.set_state("close")
+                root.screen_manager.current = "soundcloud"
+            IconLeftWidget:
+                icon:"soundcloud"
+
+        OneLineIconListItem:
+            text:"Twitter Downloader"
+            on_press:
+                root.nav.set_state("close")
+                root.screen_manager.current = "twitter"
+            IconLeftWidget:
+                icon:"twitter"
+
+        OneLineIconListItem:
+            text:"buy me a drink->$dwolf94"
+            IconLeftWidget:
+                icon:"currency-usd"
+
+
+        OneLineIconListItem:
+            text:"other projects"
+            on_press:app.github()
+            IconLeftWidget:
+                icon:"github"
+            
+
+
+
+MDScreen:
+    MDTopAppBar:
+        pos_hint:{"top":1}
+        elevation:4
+        title:"Download Menu"
+        left_action_items:[["menu",lambda x: nav.set_state("open")]]
+
+    MDNavigationLayout:
+        MDScreenManager:
+            id: screen_manager
+
+
+            MDScreen:
+                name:"youtube"
+                MDLabel:
+                    text:"Youtube Downloader"
+                    halign:"center"
+                    font_style:"H3"
+                    pos_hint:{"center_x":.5,"center_y":.75}
+
+            
+                MDTextField:
+                    id:link
+                    hint_text:"your link"
+                    helper_text:"e.g:https://youtu.be/IGD547Bnjf"
+                    pos_hint: {"center_x":.5,"center_y":.5}
+                    size_hint_x: .5
+
+                MDFloatingActionButton:
+                    icon:"folder"
+                    #md_bg_color:app.theme_cls.primary_color
+                    pos_hint:{"center_x":.79,"center_y":.5}
+
+                MDRaisedButton:
+                    id:audio
+                    text:"mp3 format"
+                    pos_hint:{"center_x":.3,"center_y":.4}
+                    on_press:app.audio_func()
+
+
+                MDRaisedButton:
+                    id:video
+                    text:"mp4 format"
+                    pos_hint:{"center_x":.69,"center_y":.4}
+                    on_press:app.video_func()
+
+            MDScreen:
+                name: "soundcloud"
+                MDLabel:
+                    id:sound_text
+                    text:"SoundCloud Downloader"
+                    halign:"center"
+                    font_style:"H3"
+                    pos_hint:{"center_x":.5,"center_y":.75}
+
+                MDTextField:
+                    id:sound
+                    hint_text:"your link"
+                    helper_text:"e.g:https://soundcloud.com/dwolf94/d-wolf-that-will-prodby"
+                    pos_hint: {"center_x":.5,"center_y":.5}
+                    size_hint_x: .5
+
+                MDFloatingActionButton:
+                    icon:"folder"
+                    md_bg_color:app.theme_cls.primary_color
+                    pos_hint:{"center_x":.79,"center_y":.5}
+
+
+            MDScreen:
+                name:"twitter"
+                #md_bg_color:"lightblue"
+
+                MDLabel:
+                    id:label_text
+                    text:"Twitter Downloader"
+                    halign:"center"
+                    font_style:"H3"
+                    pos_hint:{"center_x":.5,"center_y":.75}
+
+                MDTextField:
+                    id:twit
+                    hint_text:"your link"
+                    helper_text:"e.g:https://twitter.com/NatureFutures/status/1641048810637135874/photo/1"
+                    pos_hint: {"center_x":.5,"center_y":.5}
+                    size_hint_x: .5
+
+                MDFloatingActionButton:
+                    icon:"folder"
+                    md_bg_color:app.theme_cls.primary_color
+                    pos_hint:{"center_x":.79,"center_y":.5}
+
+
+
+
+        MDNavigationDrawer:
+            id:nav
+            radius:(0,16,16,0)
+
+            ContentNav:
+                screen_manager: screen_manager
+                nav: nav

@@ -2,64 +2,39 @@ from kivymd.app import MDApp
 #from kivymd.uix.button 
 from kivy.lang import Builder 
 from pytube import YouTube
+from kivymd.uix.scrollview import MDScrollView
+from kivy.properties import ObjectProperty
+import webbrowser
+import kivy
+from kivy.app import App
 
+#from kivymd.uix.screen import MDScreenManager,MDscreen
 
+"""
+https://www.geeksforgeeks.org/download-instagram-reel-using-python/
+for instagram downloader 
+"""
 
 """
 *created by:D.wolf
 *simple youtube downlowder
 """
 
-kv = """
-MDScreen:
-
-    MDLabel:
-        id:label_text
-        text:"Youtube Downloader"
-        halign:"center"
-        font_style:"H3"
-        pos_hint:{"center_x":.5,"center_y":.75}
-
-        
-    MDTextField:
-        id:link
-        hint_text:"your link"
-        helper_text:"e.g:https://youtu.be/IGD547Bnjf"
-        pos_hint: {"center_x":.5,"center_y":.5}
-        size_hint_x: .5
-
-    MDFloatingActionButton:
-        icon:"folder"
-        md_bg_color:app.theme_cls.primary_color
-        pos_hint:{"center_x":.79,"center_y":.5}
-
-    MDRaisedButton:
-        id:audio
-        text:"mp3 format"
-        pos_hint:{"center_x":.3,"center_y":.4}
-        on_press:app.audio_func()
 
 
-    MDRaisedButton:
-        id:video
-        text:"mp4 format"
-        pos_hint:{"center_x":.69,"center_y":.4}
-        on_press:app.video_func()
-
-
-
-
-"""
+kv = "DL.kv"
+class ContentNav(MDScrollView):
+    screen_manager = ObjectProperty()
+    nav = ObjectProperty()
 
 
 class Test(MDApp):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
-        self.screen = Builder.load_string(kv)
-
+        self.screen = Builder.load_file(kv)
     def build(self):
-        self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_pallete = "Pink"
+        self.theme_cls.theme_style = "Dark"
 
         return self.screen
 
@@ -83,11 +58,14 @@ class Test(MDApp):
             print(f"the problem is {e}")
         print("finished")
 
-    def res(self):
-        print()
+    def github(self):
+        webbrowser.open("https://github.com/nightwing25")
 
+    
 
 if __name__=="__main__":
     Test().run()
+
+
 
 
