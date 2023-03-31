@@ -10,10 +10,7 @@ from kivy.app import App
 
 #from kivymd.uix.screen import MDScreenManager,MDscreen
 
-"""
-https://www.geeksforgeeks.org/download-instagram-reel-using-python/
-for instagram downloader 
-"""
+
 
 """
 *created by:D.wolf
