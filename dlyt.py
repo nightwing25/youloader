@@ -14,7 +14,7 @@ from kivy.app import App
 
 """
 *created by:D.wolf
-*simple youtube downlowder
+*simple youtube downloader
 """
 
 
@@ -29,6 +29,7 @@ class Test(MDApp):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.screen = Builder.load_file(kv)
+
     def build(self):
         self.theme_cls.primary_pallete = "Pink"
         self.theme_cls.theme_style = "Dark"
