@@ -1,5 +1,5 @@
 from kivymd.app import MDApp
-#from kivymd.uix.button 
+#from kivymd.uix.button import MDButton
 from kivy.lang import Builder 
 from pytubefix import YouTube
 from kivymd.uix.scrollview import MDScrollView
@@ -15,8 +15,10 @@ Note: putting things in <is a rule>: meaning dont display it to the app yet just
 until you call it with its name with out the <>
 TASK:
 ~ CREATE A BUTTON TO SWITCH FROM AUDIO TO VIDEO FORMAT 
-~ CREATE SNACKBAR TO TELL WHEN FILE FINISHES TO DOWNLOad
+~ CREATE SNACKBAR TO TELL WHEN FILE FINISHES TO DOWNLOAD
 ~ TEST
+~ ADD WORKS TO THE VIDEO FUNCTION BY USING THE VIDEO CHIP TO DOWNLOAD
+~ GIVE INFO DURING DOWNLOADS UNDER THE CHIPS 
 """
 
 KV = """
@@ -43,6 +45,40 @@ KV = """
            # icon: "download"
             #on_release: app.download_mp3()
             #download function for button go here
+
+<CommonLabel@MDLabel>
+    adaptive_size: True
+    theme_text_color: "Custom"
+    #text_color: "#e6e9df"
+
+
+<CommonAssistChip@MDChip>
+    # Custom attribute.
+    text: ""
+    icon: ""
+
+    # Chip attribute.
+    type: "assist"
+    theme_bg_color: "Custom"
+    md_bg_color: "#2a3127"
+    theme_line_color: "Custom"
+    line_color: "grey"
+    theme_elevation_level: "Custom"
+    elevation_level: 1
+    theme_shadow_softness: "Custom"
+    shadow_softness: 2
+
+    MDChipLeadingIcon:
+        icon: root.icon
+        #theme_text_color: "Custom"
+        #text_color: "#68896c"
+        #text_color: "#363636"
+
+    MDChipText:
+        text: root.text
+        #theme_text_color: "Custom"
+        #text_color: "#e6e9df"
+        #text_color: "#363636"
 #MAIN 
 Downloader:
     md_bg_color: self.theme_cls.backgroundColor
@@ -54,15 +90,13 @@ Downloader:
 
             MDScreen: #all contents go here
             
-                #MDButton: make the download button outside right of text field
-                #    pos_hint:{"center_x":.2}
                 MDTextField:
                     id:linker
                     #mode: "filled"
                     size_hint_x:None
                     width:"240dp"
                     pos_hint:{"center_x":.5,"center_y":.5}
-                    on_text_validate:app.download_mp3(linker.text)
+                    #on_text_validate:app.download_mp3(linker.text)
                     
 
                     MDTextFieldHintText:
@@ -74,6 +108,30 @@ Downloader:
 
                     #MDTextFieldTrailingIcon:
                     #    icon: "download"
+
+                MDBoxLayout:
+                    adaptive_size: True
+                    pos_hint: {"center_x": .5,"center_y":.4}
+                    spacing: "12dp"
+                    padding: 0, "24dp", 0, 0
+
+                    CommonAssistChip:
+                        text: "audio-only"
+                        icon: "music"
+                        on_press:app.download_mp3(linker.text)
+
+
+                    CommonAssistChip:
+                        text: "video+audio"
+                        icon: "video-box"
+                        on_press:app.video_download(linker.text)
+
+                MDLabel:
+                    id:process
+                    text: ""
+                    halign: "center"
+                    pos_hint: {"center_x": .5,"center_y":.3}
+                    
 
 
         MDNavigationDrawer:
@@ -138,8 +196,8 @@ Downloader:
                         text: "support me ->$dwolf94"
 
                     
-                MDNavigationDrawerDivider:
-                    MDNavigationDrawerItem:
+                #MDNavigationDrawerDivider:
+                 #   MDNavigationDrawerItem:
 """
 
 
@@ -155,11 +213,35 @@ class DownerApp(MDApp):
         self.root.ids.nav_drawer.set_state("toggle")
 
     def download_mp3(self,link):
+        self.root.ids.process.text = ""
         try:
-            yt = YouTube(link)
+            yt = YouTube(link,on_complete_callback=self.audio_completed)
             audio = yt.streams.get_audio_only().download()
+            self.root.ids.process.text = ""
+            self.root.ids.process.text = "Downloading audio file"
         except Exception as e:
             print(e)
+            self.root.ids.process.text = str(e)
+
+    def audio_completed(self):
+        self.root.ids.process = ""
+        self.root.ids.process = "audio downloaded"
+
+    def video_download(self,link):
+        try:
+            yt = YouTube(link,on_complete_callback=self.video_completed)
+            video = yt.streams.get_highest_resolution().download()
+            self.root.ids.process.text = ""
+            self.root.ids.process.text = "Downloading video file"
+        except Exception as e:
+            print(e)
+            print(self.root.ids)
+            self.root.ids.process.text = str(e)
+    def video_completed(self,stream,file_path):
+        self.root.ids.process.text = ''
+        self.root.ids.process.text = 'video downloaded'
+            
+
 
     #SOCIAL SECTION------------------------------------------------
     def instagram(self):
